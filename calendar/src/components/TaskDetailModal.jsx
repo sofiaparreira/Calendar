@@ -1,14 +1,20 @@
 import React from 'react'
 
-const TaskDetailModal = () => {
+const TaskDetailModal = ({onClick}) => {
+
+    const handleModalClick = (e) => {
+        e.stopPropagation();
+      };
+
   return (
       <div
         className="fixed inset-0 z-10 bg-gray-500/75 flex items-center justify-center p-4"
         aria-labelledby="modal-title"
         role="dialog"
         aria-modal="true"
+        onClick={onClick}
       >
-        <div className="relative w-full max-w-5xl transform rounded-lg bg-white shadow-xl px-16 py-8 ">
+        <div  onClick={handleModalClick} className="relative w-full max-w-5xl transform rounded-lg bg-white shadow-xl px-16 py-8 ">
           <div className="flex justify-between">
             <h3 className="text-xl font-semibold text-gray-800" id="modal-title">
               Título da tarefa

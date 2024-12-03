@@ -53,6 +53,7 @@ function Calendar() {
 
   const handleDisplayModalDetails = () => {
     setHandleModalDetails(!handleModalDetails)
+    
   }
 
   useEffect(() => {
@@ -217,7 +218,7 @@ function Calendar() {
       </section>
 
       {hanldeModal && <AddTaskModal handleDisplayModal={handleDisplayModal} />}
-      {handleModalDetails && <TaskDetailModal />}
+      {handleModalDetails && <TaskDetailModal onClick={handleDisplayModalDetails} />}
 
 
 
