@@ -9,7 +9,7 @@ function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [hanldeModal, setHandleModal] = useState(false);
   const [tasks, setTasks] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Função para mudar o mês
   const changeMonth = (direction) => {
@@ -51,7 +51,6 @@ function Calendar() {
     setHandleModal(!hanldeModal);
   };
 
-
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -64,7 +63,22 @@ function Calendar() {
     fetchTasks();
   }, []);
 
-
+  const normalizeDate = (dateString) => {
+    const date = new Date(dateString);
+  
+    // Ajusta para o horário de Brasília (GMT-3)
+    const brtOffset = -3; // Diferença de horas para UTC no Brasil
+    const localDate = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      date.getUTCHours() + brtOffset
+    );
+  
+    // Retorna a data normalizada (ignora horas, minutos e segundos)
+    return new Date(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
+  };
+  
 
   return (
     <>
@@ -153,7 +167,15 @@ function Calendar() {
           {/* Dias da semana */}
           <div className="border border-gray-200">
             <div className="grid grid-cols-7 divide-gray-200 border-b border-gray-200">
-              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+              {[
+                "Domingo",
+                "Segunda",
+                "Terça",
+                "Quarta",
+                "Quinta",
+                "Sexta",
+                "Sábado",
+              ].map((day) => (
                 <div
                   key={day}
                   className="p-3.5 flex flex-col sm:flex-row items-center justify-between border-r border-gray-200"
@@ -180,32 +202,37 @@ function Calendar() {
                         {day}
                       </span>
                       <div>
-                        {Array.isArray(tasks) &&
-                        tasks.filter(
-                          (task) => new Date(task.date).getDate() === day
-                        ).length === 0 ? (
-                          <p></p>
-                        ) : (
-                          Array.isArray(tasks) &&
-                          tasks
-                            .filter(
-                              (task) => new Date(task.date).getDate() === day
-                            )
-                            .map((task) => (
-                              <Link  to={`/${task.id}`}>
-                              <div
-                              
-                                className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer"
-                                key={task.id}
-                              >
-                                <h3 className="px-1">{task.title}</h3>
-                                <p className="text-sm px-2 bg-green-50 text-green-500">
-                                  {task.category}
-                                </p>
-                              </div>
-                              </Link>
-                            ))
-                        )}
+                      {Array.isArray(tasks) &&
+tasks.filter(
+  (task) => {
+    const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
+    return taskDay === day;
+  }
+).length === 0 ? (
+  <p></p>
+) : (
+  Array.isArray(tasks) &&
+  tasks
+    .filter(
+      (task) => {
+        const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
+        return taskDay === day;
+      }
+    )
+    .map((task) => (
+      <Link to={`/${task.id}`} key={task.id}>
+        <div
+          className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer"
+        >
+          <h3 className="px-1">{task.title}</h3>
+          <p className="text-sm px-2 bg-green-50 text-green-500">
+            {task.category}
+          </p>
+        </div>
+      </Link>
+    ))
+)}
+
                       </div>
                     </div>
                   )}
@@ -217,7 +244,6 @@ function Calendar() {
       </section>
 
       {hanldeModal && <AddTaskModal handleDisplayModal={handleDisplayModal} />}
-      
     </>
   );
 }
