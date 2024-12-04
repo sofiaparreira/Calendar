@@ -3,13 +3,13 @@ import axios from "axios";
 
 //components
 import AddTaskModal from "./components/AddTaskModal";
-import TaskDetailModal from "./components/TaskDetailModal";
+import { Link, useNavigate } from "react-router-dom";
 
 function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [hanldeModal, setHandleModal] = useState(false);
-  const [handleModalDetails, setHandleModalDetails] = useState(false)
   const [tasks, setTasks] = useState();
+  const navigate = useNavigate()
 
   // Função para mudar o mês
   const changeMonth = (direction) => {
@@ -51,10 +51,6 @@ function Calendar() {
     setHandleModal(!hanldeModal);
   };
 
-  const handleDisplayModalDetails = () => {
-    setHandleModalDetails(!handleModalDetails)
-    
-  }
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -67,6 +63,8 @@ function Calendar() {
     };
     fetchTasks();
   }, []);
+
+
 
   return (
     <>
@@ -172,7 +170,7 @@ function Calendar() {
               {days.map((day, index) => (
                 <div
                   key={index}
-                  className={`p-3.5 border-b border-r border-gray-200 xl:aspect-auto flex justify-between flex-col max-lg:items-center min-h-32 transition-all duration-300  ${
+                  className={`p-3.5 border-b border-r border-gray-200 xl:aspect-auto flex justify-between flex-col max-lg:items-center min-h-32  transition-all duration-300  ${
                     day === null ? "bg-gray-50" : ""
                   }`}
                 >
@@ -181,7 +179,7 @@ function Calendar() {
                       <span className="text-xs font-semibold text-gray-900 flex items-center justify-center w-7 h-7 rounded-full">
                         {day}
                       </span>
-                      <div >
+                      <div>
                         {Array.isArray(tasks) &&
                         tasks.filter(
                           (task) => new Date(task.date).getDate() === day
@@ -194,9 +192,9 @@ function Calendar() {
                               (task) => new Date(task.date).getDate() === day
                             )
                             .map((task) => (
+                              <Link  to={`/${task.id}`}>
                               <div
-
-                                onClick={handleDisplayModalDetails}
+                              
                                 className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer"
                                 key={task.id}
                               >
@@ -205,6 +203,7 @@ function Calendar() {
                                   {task.category}
                                 </p>
                               </div>
+                              </Link>
                             ))
                         )}
                       </div>
@@ -218,10 +217,7 @@ function Calendar() {
       </section>
 
       {hanldeModal && <AddTaskModal handleDisplayModal={handleDisplayModal} />}
-      {handleModalDetails && <TaskDetailModal onClick={handleDisplayModalDetails} />}
-
-
-
+      
     </>
   );
 }

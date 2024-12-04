@@ -16,6 +16,24 @@ router.get('/', async (req, res) => {
 })
 
 
+router.get("/:id", async (req, res) => {
+    try {
+        const taskId = req.params.id;    
+
+        const task = await Task.findOne({
+            where: { id: taskId },
+        });
+
+        if (!task) {
+            return res.status(404).json({ error: "Produto não encontrado" });
+        }
+
+        res.status(200).json(task);
+    } catch (error) {
+        console.error("Error fetching product", error);
+        res.status(500).json({ error: "Erro ao buscar produto" });
+    }
+});
 
 
 router.post('/add', async (req, res) => {
