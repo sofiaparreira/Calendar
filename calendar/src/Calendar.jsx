@@ -56,6 +56,7 @@ function Calendar() {
       try {
         const response = await axios.get("http://localhost:3000/");
         setTasks(response.data);
+        window.location.reload
       } catch (error) {
         console.error("Erro ao buscar produtos", error);
       }
@@ -88,7 +89,7 @@ function Calendar() {
   return (
     <>
       <section className="relative py-8 sm:p-8">
-        <div className="w-full max-w-8xl mx-auto px-4 lg:px-8 xl:px-14">
+        <div className="w-full max-w-8xl mx-auto px-4 ">
           <div className="flex items-center justify-between gap-3 mb-5">
             <div className="flex items-center gap-4">
               <h5 className="text-xl leading-8 font-semibold text-gray-900 first-letter:uppercase">
@@ -226,8 +227,8 @@ function Calendar() {
                               <Link to={`/${task.id}`} key={task.id}>
                                 <div className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer">
                                   <h3 className="px-1">{task.title}</h3>
-                                  <p className="text-sm px-2 bg-green-50 text-green-500">
-                                    {task.category}
+                                  <p className={`text-xs rounded mr-1 px-2 ${task.status === "Pendente " ? 'bg-blue-50 text-blue-500' : task.status === "Confirmado" ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'} `}> {/*o pendente não funciona a cor sem status, ainda não sei pq*/}
+                                    {task.status}
                                   </p>
                                 </div>
                               </Link>

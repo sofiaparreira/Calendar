@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const AddTaskModal = ({ handleDisplayModal }) => {
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("");
+  const [status, setStatus] = useState("");
   const [employee, setEmployee] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
@@ -14,7 +14,7 @@ const AddTaskModal = ({ handleDisplayModal }) => {
     e.preventDefault();
 
     const newTask = {
-      title, category, employee, date, description
+      title, status, employee, date, description
     };
 
     try {
@@ -24,7 +24,7 @@ const AddTaskModal = ({ handleDisplayModal }) => {
       setTitle('');
       setDescription('');
       setDate('');
-      setCategory('');
+      setStatus('');
       setEmployee('');
       handleDisplayModal(false)
     } catch (error) {
@@ -49,10 +49,10 @@ const AddTaskModal = ({ handleDisplayModal }) => {
               <InputContainer label={"Título"} onChange={(e) => setTitle(e.target.value)} />
               <div className="grid grid-cols-2 gap-8 mt-4">
                 <SelectMenu
-                  onChange={(e) => setCategory(e.target.value)}
-                  label="Categoria"
-                  selectedOption="Selecione a categoria"
-                  options={["Tranquilo", "Moderado", "Urgente"]}
+                  onChange={(e) => setStatus(e.target.value)}
+                  label="Status"
+                  selectedOption="Selecione o status"
+                  options={["Pendente", "Confirmado", "Ausente"]}
                 />
                 <SelectMenu
                   onChange={(e) => setEmployee(e.target.value)}

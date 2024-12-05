@@ -22,7 +22,7 @@ const Task = sequelize.define('Task', {
         allowNull: true,
     
     },
-    category: {
+    status: {
         type: DataTypes.STRING,
         allowNull: true
     },
