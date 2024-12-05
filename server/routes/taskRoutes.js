@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
 
 router.post('/add', async (req, res) => {
     console.log("Request Body:", req.body); 
-    const { id, title, description, date, status, employee } = req.body;
+    const { id, title, description, date, status, employee, isDone } = req.body;
 
     try {
         if (!title) {
@@ -52,6 +52,7 @@ router.post('/add', async (req, res) => {
             date,
             status,
             employee,
+            isDone
         });
 
         res.status(201).json(newTask);
@@ -83,7 +84,7 @@ router.put("/update/:id", async (req, res) => {
 
     try {
         const { id } = req.params 
-        const { title, description, date, status, employee } = req.body;
+        const { title, description, date, status, employee, isDone } = req.body;
 
         const task = await Task.findByPk(id)
         if(!task){
@@ -91,7 +92,7 @@ router.put("/update/:id", async (req, res) => {
         }
 
         await Task.update(
-            { title, description, date, status, employee },
+            { title, description, date, status, employee, isDone },
             { where: { id } }
         )
 

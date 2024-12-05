@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DeleteTaskModal from './components/DeleteTaskModal';
 import axios from 'axios';
+import AddTaskModal from './components/AddTaskModal';
 
 const TaskDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [task, setTask] = useState(null);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   const handleGetDetail = async () => {
     try {
       const response = await fetch(`http://localhost:3000/${id}`);
       const data = await response.json();
       setTask(data);
-      console.log('Detalhes do produto', data);
     } catch (error) {
-      console.log('Erro ao buscar detalhes do produto: ', error);
+      console.log('Erro ao buscar detalhes da tarefa: ', error);
     }
   };
 
-  useEffect(() => {
-    handleGetDetail();
-  }, [id]);
+
+
+  const handleDeleteTask = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/delete/${task.id}`);
+      console.log('Tarefa excluída com sucesso', response.data.message);
+      navigate('/');
+    } catch (error) {
+      console.log('Erro ao excluir a tarefa: ', error);
+    }
+  };
 
   const handleBack = () => {
     navigate(-1);
@@ -32,26 +41,33 @@ const TaskDetails = () => {
     setDeleteModal(!deleteModal);
   };
 
-  const handleDeleteTask = async () => {
-    try {
-      const response = await axios.delete(`http://localhost:3000/delete/${task.id}`);
-      console.log('Task deleted successfully', response.data.message);
-      navigate('/');
-    } catch (error) {
-      console.log('Error deleting task: ', error);
-    }
+  const handleEditTask = () => {
+    setEditModal(true);
   };
+
+  // UseEffect para carregar a tarefa ao inicializar
+  useEffect(() => {
+    handleGetDetail();
+  }, [id]);
+
+  useEffect(() => {
+    if (task) {
+      handleGetDetail();
+    }
+  }, [task]);
 
   if (!task) {
     return <p>Loading...</p>;
   }
 
   return (
-    <div className="flex flex-col min-h-screen  ">
+    <div className="flex flex-col min-h-screen">
       <div>
-        <button onClick={handleBack} className='m-4 px-4 py-0.5 space-x-2 rounded border border-gray-200 hover:ring hover:ring-gray-200 duration-300'><i className='bi bi-arrow-left-circle-fill'></i><span>Voltar</span></button>
+        <button onClick={handleBack} className='m-4 px-4 py-0.5 space-x-2 rounded border border-gray-200 hover:ring hover:ring-gray-200 duration-300'>
+          <i className='bi bi-arrow-left-circle-fill'></i><span>Voltar</span>
+        </button>
       </div>
-     
+
       <div className="flex-grow my-16 mx-48">
         <div className="flex justify-between items-center">
           <div className="flex gap-16 items-center">
@@ -59,14 +75,11 @@ const TaskDetails = () => {
             <span className="text-green-600 bg-green-50 px-8 rounded-md py-1">{task.status}</span>
           </div>
           <div className="flex gap-8 items-center">
-            <button className="bg-orange-400 text-white px-6 py-1.5 rounded-md space-x-3">
+            <button onClick={handleEditTask} className="bg-orange-400 text-white px-6 py-1.5 rounded-md space-x-3">
               <i className="bi bi-pencil-square"></i>
               <span>Editar</span>
             </button>
-            <button
-              onClick={handleDeleteModal}
-              className="bg-red-500 text-white px-6 py-1.5 rounded-md space-x-3"
-            >
+            <button onClick={handleDeleteModal} className="bg-red-500 text-white px-6 py-1.5 rounded-md space-x-3">
               <i className="bi bi-trash3-fill"></i>
               <span>Excluir</span>
             </button>
@@ -83,6 +96,15 @@ const TaskDetails = () => {
 
       {deleteModal && (
         <DeleteTaskModal handleDeleteModal={handleDeleteModal} handleDeleteTask={handleDeleteTask} />
+      )}
+
+      {editModal && (
+        <AddTaskModal
+          handleDisplayModal={() => setEditModal(false)}
+          task={task} 
+          isEdit={true}
+          onTaskUpdate={(updatedTask) => setTask(updatedTask)} 
+        />
       )}
     </div>
   );

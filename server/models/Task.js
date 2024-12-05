@@ -35,7 +35,14 @@ const Task = sequelize.define('Task', {
     employee: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+
+    isDone: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
     }
+
 })
 
 module.exports = Task
