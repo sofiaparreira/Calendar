@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
 
 
 router.post('/add', async (req, res) => {
-    console.log("Request Body:", req.body); // Verifica o que está sendo enviado
+    console.log("Request Body:", req.body); 
     const { id, title, description, date, category, employee } = req.body;
 
     try {
@@ -60,6 +60,48 @@ router.post('/add', async (req, res) => {
         res.status(400).json({ error: "Error Post" });
     }
 });
+
+
+router.delete('/delete/:id', async (req, res) => {
+    try {
+        const { id } = req.params
+        const task = await Task.destroy({ where: { id } });
+
+        if(!task){
+            return res.status(404).json({ error: "Task not found" });
+        }
+        res.status(200).json({ message: "Task deleted sucessfully" });
+
+        
+    } catch (error) {
+        console.error("Error deleting task", error);
+        return res.status(500).json({error: "Error deleting task"})
+    }
+})
+
+router.put("/update/:id", async (req, res) => {
+
+    try {
+        const { id } = req.params 
+        const { title, description, date, category, employee } = req.body;
+
+        const task = await Task.findByPk(id)
+        if(!task){
+            return res.status(404).json({error: "Task not found"})
+        }
+
+        await Task.update(
+            { title, description, date, category, employee },
+            { where: { id } }
+        )
+
+        res.status(200).json({message: "Product updated successfully"})
+
+    } catch (error) {
+        console.error("Error updating task", error)
+        return res.status(500).json({error: "Error updating task"})
+    }
+})
 
 
 

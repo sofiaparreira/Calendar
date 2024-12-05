@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import DeleteTaskModal from './components/DeleteTaskModal';
+import axios from 'axios'
+
 
 const TaskDetails = () => {
   const { id } = useParams();
@@ -40,6 +42,19 @@ const TaskDetails = () => {
   const handleUpdateModal = () => {
     setUpdateModal(!updateModal)
   }
+
+
+  const handleDeleteTask = async () => {
+    
+    try {
+      const response = await axios.delete(`http://localhost:3000/delete/${task.id}`)
+      console.log("Task deleted successfully", response.data.message)
+      navigate('/')
+
+    } catch (error) {
+      console.log("Error deleting task: ", error);
+    }
+  }
   return (
     <>
       <button onClick={handleBack} className='p-4'>Voltar</button>
@@ -58,7 +73,7 @@ const TaskDetails = () => {
         <p className='min-h-32 rounded border border-gray-200 p-2 mt-32'>{task.description}</p>
       </div>
 
-      {deleteModal && <DeleteTaskModal handleDeleteModal={handleDeleteModal} />}
+      {deleteModal && <DeleteTaskModal handleDeleteModal={handleDeleteModal} handleDeleteTask={handleDeleteTask} />}
     </>
   );
 }

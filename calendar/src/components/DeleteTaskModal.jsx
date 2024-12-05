@@ -1,6 +1,6 @@
 import React from "react";
 
-const DeleteTaskModal = ({handleDeleteModal}) => {
+const DeleteTaskModal = ({handleDeleteModal, handleDeleteTask}) => {
   return (
     <div>
       <div
@@ -53,6 +53,7 @@ const DeleteTaskModal = ({handleDeleteModal}) => {
               </div>
               <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                 <button
+                onClick={handleDeleteTask}
                   type="button"
                   class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
                 >
