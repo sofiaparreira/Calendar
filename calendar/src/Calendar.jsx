@@ -65,7 +65,7 @@ function Calendar() {
 
   const normalizeDate = (dateString) => {
     const date = new Date(dateString);
-  
+
     // Ajusta para o horário de Brasília (GMT-3)
     const brtOffset = -3; // Diferença de horas para UTC no Brasil
     const localDate = new Date(
@@ -74,11 +74,14 @@ function Calendar() {
       date.getUTCDate(),
       date.getUTCHours() + brtOffset
     );
-  
+
     // Retorna a data normalizada (ignora horas, minutos e segundos)
-    return new Date(localDate.getFullYear(), localDate.getMonth(), localDate.getDate());
+    return new Date(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate()
+    );
   };
-  
 
   return (
     <>
@@ -202,37 +205,32 @@ function Calendar() {
                         {day}
                       </span>
                       <div>
-                      {Array.isArray(tasks) &&
-tasks.filter(
-  (task) => {
-    const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
-    return taskDay === day;
-  }
-).length === 0 ? (
-  <p></p>
-) : (
-  Array.isArray(tasks) &&
-  tasks
-    .filter(
-      (task) => {
-        const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
-        return taskDay === day;
-      }
-    )
-    .map((task) => (
-      <Link to={`/${task.id}`} key={task.id}>
-        <div
-          className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer"
-        >
-          <h3 className="px-1">{task.title}</h3>
-          <p className="text-sm px-2 bg-green-50 text-green-500">
-            {task.category}
-          </p>
-        </div>
-      </Link>
-    ))
-)}
-
+                        {Array.isArray(tasks) &&
+                        tasks.filter((task) => {
+                          const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
+                          return taskDay === day;
+                        }).length === 0 ? (
+                          <p></p>
+                        ) : (
+                          Array.isArray(tasks) &&
+                          tasks
+                            .filter((task) => {
+                              const taskDay = normalizeDate(
+                                task.date
+                              ).getDate(); // Normaliza a data da tarefa
+                              return taskDay === day;
+                            })
+                            .map((task) => (
+                              <Link to={`/${task.id}`} key={task.id}>
+                                <div className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer">
+                                  <h3 className="px-1">{task.title}</h3>
+                                  <p className="text-sm px-2 bg-green-50 text-green-500">
+                                    {task.category}
+                                  </p>
+                                </div>
+                              </Link>
+                            ))
+                        )}
                       </div>
                     </div>
                   )}

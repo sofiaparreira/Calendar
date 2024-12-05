@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import DeleteTaskModal from './components/DeleteTaskModal';
 
 const TaskDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate()
-  const [task, setTask] = useState(null)  // Set initial state to null instead of undefined
+  const [task, setTask] = useState(null) 
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [updateModal, setUpdateModal] = useState(false)
+
 
   const handleGetDetail = async () => {
     try {
@@ -29,17 +33,32 @@ const TaskDetails = () => {
     return <p>Loading...</p>;  
   }
 
+  const handleDeleteModal = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  const handleUpdateModal = () => {
+    setUpdateModal(!updateModal)
+  }
   return (
     <>
       <button onClick={handleBack} className='p-4'>Voltar</button>
       <div className='mx-48 my-16'>
         <div className='flex justify-between items-center'>
-          <h2 className='text-2xl font-semibold first-letter:uppercase'>{task.title}</h2>
-          <span className='text-green-600 bg-green-50 px-8 rounded py-1'>{task.category}</span>
+          <div className='flex gap-16 items-center'>
+            <h2 className='text-2xl font-semibold first-letter:uppercase'>{task.title}</h2>
+            <span className='text-green-600 bg-green-50 px-8 rounded-md py-1'>{task.category}</span>
+          </div>
+          <div className='flex gap-8 items-center'>
+            <button className='bg-orange-400 text-white px-6 py-1.5 rounded-md  space-x-3'><i className='bi bi-pencil-square'></i><span>Editar</span></button>
+            <button onClick={handleDeleteModal} className='bg-red-500 text-white px-6 py-1.5 rounded-md space-x-3'><i className='bi bi-trash3-fill'></i><span>Excluir</span></button>
+          </div>
         </div>
         <span className='text-sm text-gray-400'>{task.date}</span>
         <p className='min-h-32 rounded border border-gray-200 p-2 mt-32'>{task.description}</p>
       </div>
+
+      {deleteModal && <DeleteTaskModal handleDeleteModal={handleDeleteModal} />}
     </>
   );
 }
