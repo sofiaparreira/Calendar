@@ -26,6 +26,7 @@ const AddTaskModal = ({ handleDisplayModal }) => {
       setDate('');
       setCategory('');
       setEmployee('');
+      handleDisplayModal(false)
     } catch (error) {
       console.error('Error adding task: ', error);
     }

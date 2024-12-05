@@ -67,7 +67,7 @@ function Calendar() {
     const date = new Date(dateString);
 
     // Ajusta para o horário de Brasília (GMT-3)
-    const brtOffset = -3; // Diferença de horas para UTC no Brasil
+    const brtOffset = 3; // Diferença de horas para UTC no Brasil
     const localDate = new Date(
       date.getUTCFullYear(),
       date.getUTCMonth(),
@@ -82,6 +82,8 @@ function Calendar() {
       localDate.getDate()
     );
   };
+
+
 
   return (
     <>
