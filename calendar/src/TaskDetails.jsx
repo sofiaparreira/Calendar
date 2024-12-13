@@ -74,7 +74,7 @@ const TaskDetails = () => {
         <div className="flex justify-between items-center">
           <div className="flex gap-16 items-center">
             <h2 className="text-2xl font-semibold first-letter:uppercase">{task.title}</h2>
-            <span className="text-green-600 bg-green-50 px-8 rounded-md py-1">{task.status}</span>
+            <span className={`${ task.status === "Confirmado" ? "bg-green-100 text-green-600 " : task.status === "Pendente" ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"}  px-8 rounded-md py-1`}>{task.status}</span>
           </div>
           <div className="flex gap-8 items-center">
             <button onClick={handleEditTask} className="bg-orange-400 text-white px-6 py-1.5 rounded-md space-x-3">
@@ -88,6 +88,14 @@ const TaskDetails = () => {
           </div>
         </div>
         <span className="text-sm text-gray-400">{task.date}</span>
+        <div className='mt-16 p-4  '>
+          <p className='text-gray-500'>Funcionários: </p>
+          <div className='mt-4 flex gap-4'>
+            <span className='p-2 text-xs font-semibold bg-blue-500 text-white rounded-full'>CA</span>
+            <span className='p-2 text-xs font-semibold bg-blue-500 text-white rounded-full'>SO</span>
+
+          </div>
+        </div>
         <p className="mt-32 py-4 font-semibold text-gray-500">Descrição:</p>
         <p className="min-h-32 rounded border border-gray-200 p-2">{task.description}</p>
       </div>
