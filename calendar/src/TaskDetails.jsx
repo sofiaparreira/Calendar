@@ -31,6 +31,18 @@ const TaskDetails = () => {
     }
   };
 
+  const handleTaskCompletion = async () => {
+    try {
+      const updatedTask = { ...task, isDone: true };
+      await axios.put(`http://localhost:3000/update/${task.id}`, updatedTask);
+      setTask(updatedTask);
+      console.log('Tarefa marcada como finalizada com sucesso');
+      console.log(task.isDone)
+    } catch (error) {
+      console.log('Erro ao marcar a tarefa como finalizada: ', error);
+    }
+  };
+
   const handleBack = () => {
     navigate(-1);
   };
@@ -74,7 +86,7 @@ const TaskDetails = () => {
         <div className="flex justify-between items-center">
           <div className="flex gap-16 items-center">
             <h2 className="text-2xl font-semibold first-letter:uppercase">{task.title}</h2>
-            <span className={`${ task.status === "Confirmado" ? "bg-green-100 text-green-600 " : task.status === "Pendente" ? "bg-blue-100 text-blue-600" : "bg-red-100 text-red-600"}  px-8 rounded-md py-1`}>{task.status}</span>
+            <span className="text-green-600 bg-green-50 px-8 rounded-md py-1">{task.status}</span>
           </div>
           <div className="flex gap-8 items-center">
             <button onClick={handleEditTask} className="bg-orange-400 text-white px-6 py-1.5 rounded-md space-x-3">
@@ -88,18 +100,12 @@ const TaskDetails = () => {
           </div>
         </div>
         <span className="text-sm text-gray-400">{task.date}</span>
-        <div className='mt-16 p-4  '>
-          <p className='text-gray-500'>Funcionários: </p>
-          <div className='mt-4 flex gap-4'>
-            <span className='p-2 text-xs font-semibold bg-blue-500 text-white rounded-full'>CA</span>
-            <span className='p-2 text-xs font-semibold bg-blue-500 text-white rounded-full'>SO</span>
-
-          </div>
-        </div>
         <p className="mt-32 py-4 font-semibold text-gray-500">Descrição:</p>
         <p className="min-h-32 rounded border border-gray-200 p-2">{task.description}</p>
       </div>
-      <button className="bg-green-600 text-white rounded-xl py-4 mt-auto mb-8 mx-48 space-x-4 hover:ring-4 hover:ring-green-200 duration-300">
+      <button 
+        onClick={handleTaskCompletion}
+        className="bg-green-600 text-white rounded-xl py-4 mt-auto mb-8 mx-48 space-x-4 hover:ring-4 hover:ring-green-200 duration-300">
         <i className='bi bi-check-circle'></i>
         <span>Tarefa Finalizada</span>
       </button>
