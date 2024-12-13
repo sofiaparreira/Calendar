@@ -56,12 +56,11 @@ function Calendar() {
       try {
         const response = await axios.get("http://localhost:3000/");
         setTasks(response.data);
-        window.location.reload
       } catch (error) {
         console.error("Erro ao buscar produtos", error);
       }
     };
-    fetchTasks();
+        fetchTasks();
   }, []);
 
   const normalizeDate = (dateString) => {

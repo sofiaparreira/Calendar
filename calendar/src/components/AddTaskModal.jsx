@@ -29,6 +29,8 @@ const AddTaskModal = ({ handleDisplayModal, task, isEdit, onTaskUpdate  }) => {
         // Se for adicionar, faz uma requisição POST
         response = await axios.post('http://localhost:3000/add', updatedTask);
         console.log('Task added: ', response.data);
+        window.location.reload()
+
       }
 
       // Atualiza a tarefa no estado do componente pai (TaskDetails)
