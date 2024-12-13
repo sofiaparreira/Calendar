@@ -226,8 +226,8 @@ function Calendar() {
                             .map((task) => (
                               <Link to={`/${task.id}`} key={task.id}>
                                 <div className="flex items-center justify-between border border-gray-100 rounded my-2 hover:ring hover:ring-gray-100 cursor-pointer">
-                                  <h3 className="px-1">{task.title}</h3>
-                                  <p className={`text-xs rounded mr-1 px-2 ${task.status === "Pendente " ? 'bg-blue-50 text-blue-500' : task.status === "Confirmado" ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'} `}> {/*o pendente não funciona a cor sem status, ainda não sei pq*/}
+                                <h3 className={`px-1 ${task.isDone ? "line-through" : ""}`}>{task.title}</h3>
+                                <p className={`text-xs rounded mr-1 px-2 ${task.status === "Pendente " ? 'bg-blue-50 text-blue-500' : task.status === "Confirmado" ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'} `}> {/*o pendente não funciona a cor sem status, ainda não sei pq*/}
                                     {task.status}
                                   </p>
                                 </div>
