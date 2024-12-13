@@ -21,12 +21,10 @@ const TaskDetails = () => {
     }
   };
 
-
-
   const handleDeleteTask = async () => {
     try {
-      const response = await axios.delete(`http://localhost:3000/delete/${task.id}`);
-      console.log('Tarefa excluída com sucesso', response.data.message);
+      await axios.delete(`http://localhost:3000/delete/${task.id}`);
+      console.log('Tarefa excluída com sucesso');
       navigate('/');
     } catch (error) {
       console.log('Erro ao excluir a tarefa: ', error);
@@ -45,16 +43,20 @@ const TaskDetails = () => {
     setEditModal(true);
   };
 
-  // UseEffect para carregar a tarefa ao inicializar
+  const handleTaskUpdate = (updatedTask) => {
+    setTask(updatedTask);
+    setEditModal(false);
+  };
+
   useEffect(() => {
     handleGetDetail();
   }, [id]);
 
   useEffect(() => {
-    if (task) {
+    if (editModal === false) {
       handleGetDetail();
     }
-  }, [task]);
+  }, [editModal]);
 
   if (!task) {
     return <p>Loading...</p>;
@@ -103,7 +105,7 @@ const TaskDetails = () => {
           handleDisplayModal={() => setEditModal(false)}
           task={task} 
           isEdit={true}
-          onTaskUpdate={(updatedTask) => setTask(updatedTask)} 
+          onTaskUpdate={handleTaskUpdate} 
         />
       )}
     </div>

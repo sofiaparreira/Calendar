@@ -24,6 +24,7 @@ const AddTaskModal = ({ handleDisplayModal, task, isEdit, onTaskUpdate  }) => {
         // Se for editar, faz uma requisição PUT
         response = await axios.put(`http://localhost:3000/update/${task.id}`, updatedTask);
         console.log('Task updated: ', response.data);
+        
       } else {
         // Se for adicionar, faz uma requisição POST
         response = await axios.post('http://localhost:3000/add', updatedTask);
