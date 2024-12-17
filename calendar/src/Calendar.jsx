@@ -33,7 +33,6 @@ function Calendar() {
       0
     );
 
-    // Dias da semana (0 = Domingo, 1 = Segunda, ...)
     const startDay = firstDayOfMonth.getDay();
     const totalDays = lastDayOfMonth.getDate();
 
@@ -61,13 +60,13 @@ function Calendar() {
     }
     };
     fetchTasks();
-}, [currentMonth]); // Adicionando currentMonth aqui
+}, [currentMonth]);
 
   const normalizeDate = (dateString) => {
     const date = new Date(dateString);
 
-    // Ajusta para o horário de Brasília (GMT-3)
-    const brtOffset = 3; // Diferença de horas para UTC no Brasil
+    // horário do brasil
+    const brtOffset = 3; 
     const localDate = new Date(
       date.getUTCFullYear(),
       date.getUTCMonth(),
@@ -75,7 +74,6 @@ function Calendar() {
       date.getUTCHours() + brtOffset
     );
 
-    // Retorna a data normalizada (ignora horas, minutos e segundos)
     return new Date(
       localDate.getFullYear(),
       localDate.getMonth(),
