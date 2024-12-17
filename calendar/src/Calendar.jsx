@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 function Calendar() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [hanldeModal, setHandleModal] = useState(false);
-  const [tasks, setTasks] = useState();
+  const [tasks, setTasks] = useState([]);
   const navigate = useNavigate();
 
   // Função para mudar o mês
@@ -53,15 +53,15 @@ function Calendar() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      try {
+    try {
         const response = await axios.get("http://localhost:3000/");
         setTasks(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar produtos", error);
-      }
+    } catch (error) {
+        console.error("Erro ao buscar tarefas", error);
+    }
     };
-        fetchTasks();
-  }, []);
+    fetchTasks();
+}, [currentMonth]); // Adicionando currentMonth aqui
 
   const normalizeDate = (dateString) => {
     const date = new Date(dateString);
@@ -82,6 +82,7 @@ function Calendar() {
       localDate.getDate()
     );
   };
+
 
 
 
@@ -208,10 +209,11 @@ function Calendar() {
                       </span>
                       <div>
                         {Array.isArray(tasks) &&
-                        tasks.filter((task) => {
-                          const taskDay = normalizeDate(task.date).getDate(); // Normaliza a data da tarefa
-                          return taskDay === day;
-                        }).length === 0 ? (
+                       tasks.filter((task) => {
+                        const taskMonth = normalizeDate(task.date).getMonth();
+                        const taskYear = normalizeDate(task.date).getFullYear();
+                        return taskMonth === currentMonth.getMonth() && taskYear === currentMonth.getFullYear() && normalizeDate(task.date).getDate() === day;
+                    }).length === 0 ? (
                           <p></p>
                         ) : (
                           Array.isArray(tasks) &&
