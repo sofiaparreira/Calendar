@@ -77,7 +77,7 @@ const AddTaskModal = ({ handleDisplayModal, task, isEdit, onTaskUpdate  }) => {
                   onChange={(e) => setEmployee(e.target.value)}
                   label="Funcionário"
                   selectedOption={employee || "Selecione o funcionário"}
-                  options={["Carolina", "Douglas", "Fábio", "Josiane", "Samuel", "Sofia"]}
+                  options={["João", "Pedro", "Maria", "Luiz", "Carlos", "Luiza"]}
                 />
               </div>
 
