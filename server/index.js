@@ -12,14 +12,13 @@ app.use(express.json());
 // Configurar as rotas da API
 app.use(taskRoutes);
 
-// Servir os arquivos estáticos do React
-app.use(express.static(path.join(__dirname, 'build')));
+// Serve os arquivos estáticos do React build
+app.use(express.static(path.join(__dirname, '..', 'client', 'build')));
 
-// Rota padrão para servir o React (SPA)
+// Rota coringa para o React SPA
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'client', 'build', 'index.html'));
 });
 
-// Configurar a porta
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
